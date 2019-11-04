@@ -2,21 +2,46 @@
 
 namespace App\Container;
 
+use App\Exceptions\NotFoundException;
+
 class Container
 {
+    /**
+     * @var array
+     */
     protected $items = [];
 
-    public function set($name, callable $closure)
+    /**
+     * @param $name
+     * @return mixed
+     * @throws NotFoundException
+     */
+    public function __get($name)
     {
-        $this->items[$name] = $closure;
+        return $this->get($name);
     }
 
+    /**
+     * @param $name
+     * @param callable $closure
+     */
+    public function set($name, callable $closure)
+    {
+        $this->items[$name] = $closure();
+    }
+
+    /**
+     * @param $name
+     * @return mixed
+     * @throws NotFoundException
+     */
     public function get($name)
     {
         if($this->has($name)){
             return $this->items[$name];
         }
 
+        throw new NotFoundException();
     }
 
     /**
@@ -25,6 +50,6 @@ class Container
      */
     public function has($name)
     {
-        return isset($this->items[$name]) ? true : false;
+        return isset($this->items[$name]);
     }
 }

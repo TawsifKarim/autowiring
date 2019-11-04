@@ -12,4 +12,4 @@ $container->set('config', function(){
     return new Config();
 });
 
-var_dump($container);
+dump($container->config->get('db.username'));
