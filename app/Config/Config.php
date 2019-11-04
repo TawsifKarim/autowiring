@@ -23,7 +23,7 @@ class Config
      */
     public function __construct()
     {
-        dump('config initialized');
+        dump('config class initialized');
     }
 
     /**
@@ -34,6 +34,6 @@ class Config
     {
         $keys = explode('.', $key);
 
-        return isset($this->config[$keys[0]][$keys[1]]) ? $this->config[$keys[0][$keys[1]]] : null;
+        return isset($this->config[$keys[0]][$keys[1]]) ? $this->config[$keys[0]][$keys[1]] : null;
     }
 }

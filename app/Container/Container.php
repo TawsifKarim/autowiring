@@ -27,7 +27,24 @@ class Container
      */
     public function set($name, callable $closure)
     {
-        $this->items[$name] = $closure();
+        $this->items[$name] = $closure;
+    }
+
+    /**
+     * @param $name
+     * @param callable $closure
+     */
+    public function share($name, callable $closure)
+    {
+        $this->items[$name] = function() use ($closure) {
+            static $resolved;
+
+            if(!$resolved){
+                $resolved = $closure($this);
+            }
+
+            return $resolved;
+        };
     }
 
     /**
@@ -38,7 +55,7 @@ class Container
     public function get($name)
     {
         if($this->has($name)){
-            return $this->items[$name];
+            return $this->items[$name]($this);
         }
 
         throw new NotFoundException();
